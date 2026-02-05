@@ -2,6 +2,8 @@ import React from 'react';
 import { ShieldCheck, AlertTriangle, XCircle } from 'lucide-react';
 
 const ResultCard = ({ result }) => {
+    if (!result) return null;
+    
     const { classification, confidenceScore, redFlags, analysis, actionSteps } = result;
 
     const getStatusStyles = () => {
