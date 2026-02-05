@@ -2,11 +2,21 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api';
 
+const getConfig = () => {
+    const token = localStorage.getItem('token');
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+};
+
 export const analyzeEmail = async (content) => {
-    try {
-        const response = await axios.post(`${API_URL}/analyze`, { content });
-        return response.data;
-    } catch (error) {
-        throw error.response ? error.response.data : new Error("Network Error");
-    }
+    const response = await axios.post(`${API_URL}/analyze`, { content }, getConfig());
+    return response.data.result;
+};
+
+export const getHistory = async () => {
+    const response = await axios.get(`${API_URL}/history`, getConfig());
+    return response.data;
 };

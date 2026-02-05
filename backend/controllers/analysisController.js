@@ -1,4 +1,5 @@
 import Groq from "groq-sdk";
+import Analysis from '../models/Analysis.js';
 
 export const analyzeEmail = async (req, res) => {
     try {
@@ -34,10 +35,27 @@ export const analyzeEmail = async (req, res) => {
         const cleanedText = text.replace(/```json|```/g, "").trim();
         const analysisResult = JSON.parse(cleanedText);
 
-        res.status(200).json(analysisResult);
+        // Save to database
+        const analysis = await Analysis.create({
+            user: req.user._id,
+            content,
+            result: analysisResult
+        });
+
+        res.status(200).json(analysis);
 
     } catch (error) {
         console.error("AI Analysis Error:", error);
         res.status(500).json({ message: "Error analyzing email", error: error.message });
+    }
+};
+
+export const getHistory = async (req, res) => {
+    try {
+        // Find all analyses belonging to the logged-in user, sort by newest first
+        const history = await Analysis.find({ user: req.user._id }).sort({ createdAt: -1 });
+        res.status(200).json(history);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching history" });
     }
 };
