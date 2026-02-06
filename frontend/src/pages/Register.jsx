@@ -17,7 +17,7 @@ const Register = () => {
             authLogin(data, data.token);
             navigate('/');
         } catch (error) {
-            alert("Registration Failed");
+            alert("Registration Failed: " + (error.response?.data?.message || "Something went wrong"));
         }
     };
 

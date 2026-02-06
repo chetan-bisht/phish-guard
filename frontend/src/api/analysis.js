@@ -20,3 +20,18 @@ export const getHistory = async () => {
     const response = await axios.get(`${API_URL}/history`, getConfig());
     return response.data;
 };
+
+export const uploadEmailFile = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const token = localStorage.getItem('token'); 
+    
+    const response = await axios.post(`${API_URL}/analyze-file`, formData, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+};

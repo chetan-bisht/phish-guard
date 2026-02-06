@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getHistory } from '../api/analysis';
-import { Shield, AlertTriangle, XCircle, X, ChevronRight } from 'lucide-react';
+import { Shield, AlertTriangle, XCircle, X, ChevronRight, ArrowLeft } from 'lucide-react';
 import ResultCard from '../components/ResultCard';
+import { Link } from 'react-router';
 
 const History = () => {
     const [history, setHistory] = useState([]);
@@ -13,7 +14,7 @@ const History = () => {
             try {
                 const data = await getHistory();
                 setHistory(data);
-            } catch (error) {
+            } catch {
                 console.error("Failed to load history");
             } finally {
                 setLoading(false);
@@ -32,7 +33,17 @@ const History = () => {
 
     return (
         <div className="max-w-4xl mx-auto p-6">
-            <h2 className="text-2xl font-bold mb-6 text-slate-800">Scan History</h2>
+            <div className="mb-6">
+                <Link 
+                    to="/" 
+                    className="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors font-medium group"
+                >
+                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                    Back to Analysis
+                </Link>
+            </div>
+
+            <h2 className="text-3xl font-bold mb-8 text-slate-800 tracking-tight">Scan History</h2>
             {history.length === 0 ? (
                 <p className="text-gray-500 text-center py-10">No scans found yet. Analyze an email to see it here!</p>
             ) : (
