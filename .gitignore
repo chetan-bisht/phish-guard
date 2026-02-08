@@ -33,3 +33,7 @@ Thumbs.db
 *.sw?
 *.local
 PROJECT_EXPLANATION.md
+
+# Serverless deployment artifacts
+.serverless/
+*.zip

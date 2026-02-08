@@ -1,0 +1,26 @@
+service: phish-guard-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1 # Change to your preferred region
+  stage: dev
+  environment:
+    MONGODB_URI: ${env:MONGODB_URI}
+    GROQ_API_KEY: ${env:GROQ_API_KEY}
+    JWT_SECRET: ${env:JWT_SECRET}
+    NODE_ENV: production
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: "*"
+
+plugins:
+  - serverless-offline # For local testing
+
+package:
+  patterns:
+    - "!node_modules/serverless-offline/**"
+    - "!node_modules/serverless/**"

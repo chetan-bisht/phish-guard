@@ -14,13 +14,16 @@ app.use(express.json());
 app.use('/api', analysisRoutes);
 app.use('/api/users', userRoutes);
 
-
 app.get('/', (req, res) => {
     res.send('API is running with ES6 modules...');
 });
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
+if (!process.env.LAMBDA_TASK_ROOT) {
+    app.listen(PORT, () => {
+        console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+    });
+}
+
+export default app;
